@@ -34,16 +34,11 @@ public record RegisterUserRequest(
         @Pattern(message = "mobile_number must contain numbers", regexp = "\\d+$")
         String mobileNumber,
 
-        @NotNull(message = "accept_tp" + ValidationMessage.MUST_BE_SPECIFIED)
+        @NotNull(message = "accept_tc" + ValidationMessage.MUST_BE_SPECIFIED)
         @AssertTrue(message = "Terms and conditions must be accepted to proceed")
         Boolean acceptTc,
 
         @NotNull(message = "gender_id" + ValidationMessage.MUST_BE_SPECIFIED)
-        Integer genderId,
-
-        @NotNull(message = "role_id" + ValidationMessage.MUST_BE_SPECIFIED)
-        Integer roleId,
-
-        String biography
+        Long genderId
 ) {
 };
