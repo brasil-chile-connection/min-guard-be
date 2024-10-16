@@ -17,29 +17,25 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-06T22:11:44-0300",
+    date = "2024-10-15T23:12:50-0300",
     comments = "version: 1.6.0, compiler: javac, environment: Java 22.0.2 (Oracle Corporation)"
 )
 public class UserMapperImpl implements UserMapper {
 
     @Override
-    public User fromRegisterRequest(RegisterUserRequest request, String password) {
-        if ( request == null && password == null ) {
+    public User fromRegisterRequest(RegisterUserRequest request) {
+        if ( request == null ) {
             return null;
         }
 
         User user = new User();
 
-        if ( request != null ) {
-            user.setGender( registerUserRequestToGender( request ) );
-            user.setEmail( request.email() );
-            user.setFirstName( request.firstName() );
-            user.setLastName( request.lastName() );
-            user.setMobilePrefix( request.mobilePrefix() );
-            user.setMobileNumber( request.mobileNumber() );
-            user.setAcceptTc( request.acceptTc() );
-        }
-        user.setPassword( password );
+        user.setEmail( request.email() );
+        user.setFirstName( request.firstName() );
+        user.setLastName( request.lastName() );
+        user.setMobilePrefix( request.mobilePrefix() );
+        user.setMobileNumber( request.mobileNumber() );
+        user.setAcceptTc( request.acceptTc() );
 
         return user;
     }
@@ -108,20 +104,6 @@ public class UserMapperImpl implements UserMapper {
         }
 
         return list;
-    }
-
-    protected Gender registerUserRequestToGender(RegisterUserRequest registerUserRequest) {
-        if ( registerUserRequest == null ) {
-            return null;
-        }
-
-        Gender gender = new Gender();
-
-        if ( registerUserRequest.genderId() != null ) {
-            gender.setId( registerUserRequest.genderId().longValue() );
-        }
-
-        return gender;
     }
 
     protected GenderResponse genderToGenderResponse(Gender gender) {

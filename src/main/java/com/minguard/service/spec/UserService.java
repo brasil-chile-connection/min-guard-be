@@ -1,5 +1,7 @@
 package com.minguard.service.spec;
 
+import com.minguard.dto.user.RegisterUserRequest;
+import com.minguard.dto.user.RegisterUserResponse;
 import com.minguard.dto.user.UserResponse;
 import com.minguard.entity.User;
 import com.minguard.util.Roles;
@@ -14,7 +16,7 @@ public interface UserService {
 
     List<UserResponse> getAllUsers();
 
-    void assignRole(User user, Roles role);
-
     UserResponse uploadProfilePicture(MultipartFile file);
+
+    RegisterUserResponse register(RegisterUserRequest request, Roles roleName);
 }

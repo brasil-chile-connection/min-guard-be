@@ -23,15 +23,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/signup")
-    @Operation(summary = "Create a new user", description = "Creates a new user in the system.")
-    public ResponseEntity<RegisterUserResponse> register(@Valid @RequestBody RegisterUserRequest request) {
-
-        RegisterUserResponse registeredUser = authService.signup(request);
-
-        return ResponseEntity.ok(registeredUser);
-    }
-
     @PostMapping("/login")
     @Operation(summary = "Authenticate user", description = "Logs-in with e-mail and password.")
     public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginRequest request) {

@@ -18,9 +18,9 @@ services:
 #    ports:
 #      - "8080:8080"
 
-  db:
+  minguard_db:
     image: postgres
-    container_name: db
+    container_name: minguard_db
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

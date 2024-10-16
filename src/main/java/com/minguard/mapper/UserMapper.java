@@ -15,9 +15,9 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(source = "request.genderId", target = "gender.id")
-    @Mapping(target = "password", expression = "java(password)")
-    User fromRegisterRequest(RegisterUserRequest request, String password);
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "gender", ignore = true)
+    User fromRegisterRequest(RegisterUserRequest request);
 
     RegisterUserResponse toRegisterResponse(User user);
 

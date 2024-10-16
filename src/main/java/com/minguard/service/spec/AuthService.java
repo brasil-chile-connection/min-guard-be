@@ -7,8 +7,6 @@ import com.minguard.dto.user.RegisterUserResponse;
 
 public interface AuthService {
 
-    RegisterUserResponse signup(RegisterUserRequest request);
-
     LoginResponse authenticate(LoginRequest request);
 
 }
