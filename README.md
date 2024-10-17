@@ -2,20 +2,23 @@
 
 ## Requirements
 
-- Java 17
+- Java 17 - JDK
 - Maven
 - Docker
+- Docker Compose
 
 ## Project run
 
 ```bash
 $ sudo docker-compose up
+$ mvn clean
+$ mvn compile
 $ mvn spring-boot:run
 ```
 
 ## API Documentation
 
-- Swagger: http://localhost:8080/swagger-ui/index.html
+- Swagger: http://localhost:8089/swagger-ui/index.html
 
 ## Best practices
 
