@@ -15,7 +15,11 @@ public interface UserService {
 
     List<UserResponse> getAllUsers();
 
+    List<UserResponse> getAllUsersByRole(String roleName);
+
     UserResponse uploadProfilePicture(MultipartFile file);
 
     RegisterUserResponse register(RegisterUserRequest request, Roles roleName);
+
+    UserResponse getUserById(Long userId);
 }

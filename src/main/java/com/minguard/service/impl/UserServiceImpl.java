@@ -21,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -58,6 +59,14 @@ public class UserServiceImpl implements UserService {
         List<User> allUsers = userRepository.findAll();
 
         return UserMapper.INSTANCE.toResponses(allUsers);
+    }
+
+    public List<UserResponse> getAllUsersByRole(String roleName) {
+        Roles roleEnum = Roles.valueOf(roleName.toUpperCase());
+        Role role = roleService.getByName(roleEnum);
+
+        List<User> users = userRepository.findByRole(role);
+        return UserMapper.INSTANCE.toResponses(users);
     }
 
     private void assignRole(User user, Roles roleName) {
@@ -99,4 +108,14 @@ public class UserServiceImpl implements UserService {
         throw new NotImplementedException("Not implemented yet");
     }
 
+    
+    public UserResponse getUserById(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isPresent()) {
+            return UserMapper.INSTANCE.toResponse(user.get());
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
 }
