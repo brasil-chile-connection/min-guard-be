@@ -2,8 +2,6 @@ package com.minguard.controller;
 
 import com.minguard.dto.user.LoginRequest;
 import com.minguard.dto.user.LoginResponse;
-import com.minguard.dto.user.RegisterUserRequest;
-import com.minguard.dto.user.RegisterUserResponse;
 import com.minguard.service.spec.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
