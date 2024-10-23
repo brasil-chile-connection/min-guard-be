@@ -40,7 +40,7 @@ public class UserController {
 
 //    TODO: copied from base project, need to implement
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/")
+    @GetMapping
     @Operation(summary = "Get all user", description = "Get details of all registered users. Must have admin role.")
     public ResponseEntity<List<UserResponse>> allUsers() {
         List<UserResponse> users = userService.getAllUsers();

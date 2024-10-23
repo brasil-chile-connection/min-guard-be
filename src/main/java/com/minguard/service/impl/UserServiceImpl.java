@@ -81,15 +81,15 @@ public class UserServiceImpl implements UserService {
 
         User user = UserMapper.INSTANCE.fromRegisterRequest(request);
 
-        assignPassword(user, request.password());
-        assignGender(user, request.genderId());
+        assignPassword(user, request.getPassword());
+        assignGender(user, request.getGenderId());
         assignRole(user, roleName);
 
         return UserMapper.INSTANCE.toRegisterResponse(userRepository.save(user));
     }
 
     private void assertPasswordsMatch(RegisterUserRequest request) {
-        if (!request.password().equals(request.passwordConfirm())) {
+        if (!request.getPassword().equals(request.getPasswordConfirm())) {
             throw new IllegalArgumentException("Passwords do not match.");
         }
     }
