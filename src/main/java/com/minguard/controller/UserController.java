@@ -78,24 +78,16 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/worker/register")
-    @Operation(summary = "Create a new worker user", description = "Creates a new worker user in the system.")
-    public ResponseEntity<RegisterUserResponse> register(@Valid @RequestBody RegisterUserRequest request) {
+    @PostMapping("/register/{roleName}")
+    @Operation(summary = "Create a new user", description = "Creates a new user in the system sending the role as a param, WORKER or ADMIN.")
+    public ResponseEntity<RegisterUserResponse> register(@Valid @RequestBody RegisterUserRequest request,@PathVariable Roles roleName) {
 
-        RegisterUserResponse registeredUser = userService.register(request, Roles.WORKER);
-
-        return ResponseEntity.ok(registeredUser);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/admin/register")
-    @Operation(summary = "Create a new admin user", description = "Creates a new admin user in the system.")
-    public ResponseEntity<RegisterUserResponse> registerAdminUser(@Valid @RequestBody RegisterUserRequest request) {
-
-        RegisterUserResponse registeredUser = userService.register(request, Roles.ADMIN);
+        RegisterUserResponse registeredUser = userService.register(request, roleName);
 
         return ResponseEntity.ok(registeredUser);
     }
+
+    
 
 
 }
