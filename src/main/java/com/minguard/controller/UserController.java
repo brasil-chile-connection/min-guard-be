@@ -64,7 +64,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/role/{roleName}")
     @Operation(summary = "Get all users by role", description = "Get details of all registered users by role. Must have admin role.")
-    public ResponseEntity<List<UserResponse>> allUsersByRole(@PathVariable String roleName) {
+    public ResponseEntity<List<UserResponse>> allUsersByRole(@PathVariable Roles roleName) {
         List<UserResponse> users = userService.getAllUsersByRole(roleName);
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }

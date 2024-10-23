@@ -61,9 +61,8 @@ public class UserServiceImpl implements UserService {
         return UserMapper.INSTANCE.toResponses(allUsers);
     }
 
-    public List<UserResponse> getAllUsersByRole(String roleName) {
-        Roles roleEnum = Roles.valueOf(roleName.toUpperCase());
-        Role role = roleService.getByName(roleEnum);
+    public List<UserResponse> getAllUsersByRole(Roles roleName) {
+        Role role = roleService.getByName(roleName);
 
         List<User> users = userRepository.findByRole(role);
         return UserMapper.INSTANCE.toResponses(users);

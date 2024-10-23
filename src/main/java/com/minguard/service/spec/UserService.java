@@ -15,7 +15,7 @@ public interface UserService {
 
     List<UserResponse> getAllUsers();
 
-    List<UserResponse> getAllUsersByRole(String roleName);
+    List<UserResponse> getAllUsersByRole(Roles roleName);
 
     UserResponse uploadProfilePicture(MultipartFile file);
 
