@@ -14,7 +14,7 @@ public interface UserService {
 
     UserResponse getAuthenticatedUser();
 
-    List<UserResponse> getAllUsers();
+    List<UserResponse> findAll();
 
     List<UserResponse> getAllUsersByRole(Roles roleName);
 

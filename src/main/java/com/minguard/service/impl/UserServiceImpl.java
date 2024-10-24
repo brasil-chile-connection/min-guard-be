@@ -57,10 +57,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponse> getAllUsers() {
-        List<User> allUsers = userRepository.findAll();
-
-        return UserMapper.INSTANCE.toResponses(allUsers);
+    public List<UserResponse> findAll() {
+        return UserMapper.INSTANCE.toResponses(userRepository.findAll());
     }
 
     public List<UserResponse> getAllUsersByRole(Roles roleName) {
