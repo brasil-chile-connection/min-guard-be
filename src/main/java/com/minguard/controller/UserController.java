@@ -86,7 +86,7 @@ public class UserController {
         return ResponseEntity.ok(registeredUser);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{userId}")
     @Operation(summary = "Edit user", description = "Updates user details by id. Must have admin role.")
     public ResponseEntity<UserResponse> editUser(@PathVariable Long userId, @Valid @RequestBody UpdateUserRequest request) {
@@ -94,7 +94,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{userId}")
     @Operation(summary = "Delete user", description = "Deletes a user by id. Must have admin role.")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
