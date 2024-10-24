@@ -20,6 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PathVariable;
+
+
+
 
 @RequiredArgsConstructor
 @Tag(name = "User Controller")
@@ -36,6 +40,15 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{userId}")
+    @Operation(summary = "Get user by id", description = "Get details of the user by id.")
+    public ResponseEntity<UserResponse> userById(@PathVariable Long userId) {
+        UserResponse user = userService.getUserById(userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
@@ -43,6 +56,14 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> allUsers() {
         List<UserResponse> users = userService.findAll();
 
+        return ResponseEntity.status(HttpStatus.OK).body(users);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/role/{roleName}")
+    @Operation(summary = "Get all users by role", description = "Get details of all registered users by role. Must have admin role.")
+    public ResponseEntity<List<UserResponse>> allUsersByRole(@PathVariable Roles roleName) {
+        List<UserResponse> users = userService.getAllUsersByRole(roleName);
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
@@ -55,14 +76,16 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/worker/register")
-    @Operation(summary = "Create a new worker user", description = "Creates a new worker user in the system.")
-    public ResponseEntity<RegisterUserResponse> register(@Valid @RequestBody RegisterUserRequest request) {
+    @PostMapping("/register/{roleName}")
+    @Operation(summary = "Create a new user", description = "Creates a new user in the system sending the role as a param, WORKER or ADMIN.")
+    public ResponseEntity<RegisterUserResponse> register(@Valid @RequestBody RegisterUserRequest request,@PathVariable Roles roleName) {
 
-        RegisterUserResponse registeredUser = userService.register(request, Roles.WORKER);
+        RegisterUserResponse registeredUser = userService.register(request, roleName);
 
         return ResponseEntity.ok(registeredUser);
     }
+
+    
 
 
 }
