@@ -15,7 +15,7 @@ public class RegisterUserRequest implements PasswordValidation{
     @NotBlank(message = "email" + ValidationMessage.MUST_BE_SPECIFIED)
     @Email(message = "email has incorrect format")
     private String email;
-
+    
     @NotBlank(message = "password" + ValidationMessage.MUST_BE_SPECIFIED)
     @Pattern(message = "password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 digit", regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}")
     private String password;

@@ -123,7 +123,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
 
-    
+        UserMapper.INSTANCE.updateUserPartial(user,request);
+
         if (request.getPassword() != null && request.getPasswordConfirm() != null) {
             assertPasswordsMatch(request);
             assignPassword(user, request.getPassword());
