@@ -29,7 +29,6 @@ public class UserController {
 
     private final UserService userService;
 
-//    TODO: copied from base project, need to implement
     @GetMapping("/me")
     @Operation(summary = "Get authenticated user", description = "Get details of the authenticated user.")
     public ResponseEntity<UserResponse> authenticatedUser() {
@@ -38,12 +37,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
-//    TODO: copied from base project, need to implement
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
-    @Operation(summary = "Get all user", description = "Get details of all registered users. Must have admin role.")
+    @Operation(summary = "Get all users", description = "Get details of all registered users. Must have admin role.")
     public ResponseEntity<List<UserResponse>> allUsers() {
-        List<UserResponse> users = userService.getAllUsers();
+        List<UserResponse> users = userService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
