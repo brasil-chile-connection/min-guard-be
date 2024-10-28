@@ -4,6 +4,7 @@ import com.minguard.dto.user.RegisterUserRequest;
 import com.minguard.dto.user.RegisterUserResponse;
 import com.minguard.dto.user.UserResponse;
 import com.minguard.dto.user.UpdateUserRequest;
+import com.minguard.entity.User;
 import com.minguard.util.Roles;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +23,7 @@ public interface UserService {
 
     RegisterUserResponse register(RegisterUserRequest request, Roles roleName);
 
-    UserResponse getUserById(Long userId);
+    User getUserById(Long userId);
 
     UserResponse editUser(Long userId, UpdateUserRequest request);
 
