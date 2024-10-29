@@ -1,6 +1,9 @@
 package com.minguard.mapper;
 
 import com.minguard.dto.incident.IncidentResponse;
+import com.minguard.dto.incident.RegisterIncidentRequest;
+import com.minguard.dto.incident.RegisterIncidentResponse;
+import com.minguard.dto.incident.UpdateIncidentRequest;
 import com.minguard.entity.Incident;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -12,14 +15,18 @@ public interface IncidentMapper {
 
     IncidentMapper INSTANCE = Mappers.getMapper(IncidentMapper.class);
 
-    // @Mapping(target = "password", ignore = true)
-    // @Mapping(target = "gender", ignore = true)
-    // User fromRegisterRequest(RegisterUserRequest request);
+    @Mapping(target = "urgency", ignore = true)
+    @Mapping(target = "reporter", ignore = true)
+    Incident fromRegisterRequest(RegisterIncidentRequest request);
 
-    // RegisterUserResponse toRegisterResponse(User user);
+    RegisterIncidentResponse toRegisterResponse(Incident incident);
 
     IncidentResponse toResponse(Incident incident);
 
     List<IncidentResponse> toResponses(List<Incident> incident);
+
+    @Mapping(target = "urgency", ignore = true)
+    @Mapping(target = "reporter", ignore = true)
+    void fromUpdateRequest(@MappingTarget Incident incident, UpdateIncidentRequest request);
 
 }

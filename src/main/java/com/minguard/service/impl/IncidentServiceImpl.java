@@ -1,6 +1,9 @@
 package com.minguard.service.impl;
 
 import com.minguard.dto.incident.IncidentResponse;
+import com.minguard.dto.incident.RegisterIncidentRequest;
+import com.minguard.dto.incident.RegisterIncidentResponse;
+import com.minguard.dto.incident.UpdateIncidentRequest;
 import com.minguard.entity.Incident;
 import com.minguard.entity.Urgency;
 import com.minguard.entity.User;
@@ -48,5 +51,54 @@ public class IncidentServiceImpl implements IncidentService {
     public Incident getIncidentById(Long incidentId) {
         return incidentRepository.findById(incidentId)
         .orElseThrow(() -> new EntityNotFoundException(String.format("Can't find incident for id=%s", incidentId)));
+    }
+
+    private void assignReporter(Incident incident, Long reporterId) {
+        User reporter = userService.getById(reporterId);
+        incident.setReporter(reporter);
+    }
+
+    private void assignUrgency(Incident incident, Long urgencyId) {
+        Urgency urgency = urgencyService.getById(urgencyId);
+        incident.setUrgency(urgency);
+    }
+
+    @Override
+    public RegisterIncidentResponse register(RegisterIncidentRequest request) {
+
+        Incident incident = IncidentMapper.INSTANCE.fromRegisterRequest(request);
+
+        assignReporter(incident, request.getReporterId);
+        assignUrgency(incident, request.getUrgencyId);
+
+        return IncidentMapper.INSTANCE.toRegisterResponse(incidentRepository.save(incident));
+    }
+
+    @Override
+    public IncidentResponse editIncident(Long incidentId, UpdateIncidentRequest request) {
+
+        Incident incident = incidentRepository.findById(incidentId)
+            .orElseThrow(() -> new RuntimeException("Incident not found"));
+
+        IncidentMapper.INSTANCE.fromUpdateRequest(incident,request);
+
+        if (request.getUrgencyId() != null) {
+            assignUrgency(incident, request.getUrgencyId);
+        }
+
+        if (request.getReporterId() != null) {
+            assignReporter(incident, request.getReporterId);
+        }
+
+        return IncidentMapper.INSTANCE.toResponse(incidentRepository.save(incident));
+    }
+
+    @Override
+    public void deleteIncident(Long incidentId) {
+        if (!incidentRepository.existsById(incidentId)) {
+            throw new RuntimeException("Incident not found");
+        }
+
+        incidentRepository.deleteById(incidentId);
     }
 }
