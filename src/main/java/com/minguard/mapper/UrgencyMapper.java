@@ -1,5 +1,7 @@
 package com.minguard.mapper;
 
+import com.minguard.dto.urgency.RegisterUrgencyRequest;
+import com.minguard.dto.urgency.RegisterUrgencyResponse;
 import com.minguard.dto.urgency.UrgencyResponse;
 import com.minguard.entity.Urgency;
 
@@ -11,6 +13,10 @@ import org.mapstruct.factory.Mappers;
 public interface UrgencyMapper {
 
     UrgencyMapper INSTANCE = Mappers.getMapper(UrgencyMapper.class);
+
+    Urgency fromRegisterRequest(RegisterUrgencyRequest request);
+
+    RegisterUrgencyResponse toRegisterResponse(Urgency urgency);
 
     List<UrgencyResponse> toResponses(List<Urgency> urgency);
 

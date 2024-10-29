@@ -54,7 +54,7 @@ public class IncidentServiceImpl implements IncidentService {
     }
 
     private void assignReporter(Incident incident, Long reporterId) {
-        User reporter = userService.getById(reporterId);
+        User reporter = userService.getUserById(reporterId);
         incident.setReporter(reporter);
     }
 
@@ -68,8 +68,8 @@ public class IncidentServiceImpl implements IncidentService {
 
         Incident incident = IncidentMapper.INSTANCE.fromRegisterRequest(request);
 
-        assignReporter(incident, request.getReporterId);
-        assignUrgency(incident, request.getUrgencyId);
+        assignReporter(incident, request.getReporterId());
+        assignUrgency(incident, request.getUrgencyId());
 
         return IncidentMapper.INSTANCE.toRegisterResponse(incidentRepository.save(incident));
     }
@@ -83,11 +83,11 @@ public class IncidentServiceImpl implements IncidentService {
         IncidentMapper.INSTANCE.fromUpdateRequest(incident,request);
 
         if (request.getUrgencyId() != null) {
-            assignUrgency(incident, request.getUrgencyId);
+            assignUrgency(incident, request.getUrgencyId());
         }
 
         if (request.getReporterId() != null) {
-            assignReporter(incident, request.getReporterId);
+            assignReporter(incident, request.getReporterId());
         }
 
         return IncidentMapper.INSTANCE.toResponse(incidentRepository.save(incident));

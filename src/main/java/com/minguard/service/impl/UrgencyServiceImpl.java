@@ -1,5 +1,7 @@
 package com.minguard.service.impl;
 
+import com.minguard.dto.urgency.RegisterUrgencyRequest;
+import com.minguard.dto.urgency.RegisterUrgencyResponse;
 import com.minguard.dto.urgency.UrgencyResponse;
 import com.minguard.entity.Urgency;
 import com.minguard.mapper.UrgencyMapper;
@@ -26,5 +28,13 @@ public class UrgencyServiceImpl implements UrgencyService {
     @Override
     public List<UrgencyResponse> findAll() {
         return UrgencyMapper.INSTANCE.toResponses(urgencyRepository.findAll());
+    }
+
+    @Override
+    public RegisterUrgencyResponse register(RegisterUrgencyRequest request) {
+
+        Urgency urgency = UrgencyMapper.INSTANCE.fromRegisterRequest(request);
+
+        return UrgencyMapper.INSTANCE.toRegisterResponse(urgencyRepository.save(urgency));
     }
 }

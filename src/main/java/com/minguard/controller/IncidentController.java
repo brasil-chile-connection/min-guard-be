@@ -3,7 +3,7 @@ package com.minguard.controller;
 import com.minguard.dto.incident.IncidentResponse;
 import com.minguard.dto.incident.RegisterIncidentResponse;
 import com.minguard.dto.incident.UpdateIncidentRequest;
-import com.minguard.dto.user.RegisterIncidentRequest;
+import com.minguard.dto.incident.RegisterIncidentRequest;
 import com.minguard.entity.Incident;
 import com.minguard.entity.User;
 import com.minguard.mapper.IncidentMapper;
@@ -20,6 +20,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,7 +41,7 @@ public class IncidentController {
     @GetMapping("/{incidentId}")
     @Operation(summary = "Get incident by id", description = "Get details of the incident by id.")
     public ResponseEntity<IncidentResponse> incidentById(@PathVariable Long incidentId) {
-        Incident incident = incidentService.getById(incidentId);
+        Incident incident = incidentService.getIncidentById(incidentId);
 
         return ResponseEntity.status(HttpStatus.OK).body(IncidentMapper.INSTANCE.toResponse(incident));
     }
@@ -83,7 +85,7 @@ public class IncidentController {
     @PutMapping("/{incidentId}")
     @Operation(summary = "Edit incident", description = "Updates incident details by id. Must have admin role.")
     public ResponseEntity<IncidentResponse> editIncident(@PathVariable Long incidentId, @Valid @RequestBody UpdateIncidentRequest request) {
-        IncidentResponse updatedIncident = incidentService.editUser(incidentId, request);
+        IncidentResponse updatedIncident = incidentService.editIncident(incidentId, request);
         return ResponseEntity.status(HttpStatus.OK).body(updatedIncident);
     }
 
