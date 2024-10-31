@@ -22,6 +22,6 @@ public class Status {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Statuses status;
+    private Statuses name;
 
 }

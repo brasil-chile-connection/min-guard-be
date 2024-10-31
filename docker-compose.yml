@@ -1,29 +1,66 @@
-#TODO: hide secrets
+# #TODO: hide secrets
 
+#services:
+# #  app:
+# #    image: 'docker-spring-boot-postgres:latest'
+# #    build:
+# #      context: .
+# #    container_name: app
+# #    depends_on:
+# #      - db
+# #    environment:
+# #      - POSTGRES_USER=postgres
+# #      - POSTGRES_PASSWORD=postgres
+# #      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/minguard
+# #      - SPRING_DATASOURCE_USERNAME=postgres
+# #      - SPRING_DATASOURCE_PASSWORD=postgres
+# #      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+# #    ports:
+# #      - "8080:8080"
+
+#   minguard_db:
+#     image: postgres
+#     container_name: minguard_db
+#     environment:
+#        - POSTGRES_USER=postgres
+#        - POSTGRES_PASSWORD=postgres
+#        - POSTGRES_DB=minguard
+#     ports:
+#        - "5433:5432"
+
+
+version: '3.8'
 services:
-#  app:
-#    image: 'docker-spring-boot-postgres:latest'
-#    build:
-#      context: .
-#    container_name: app
-#    depends_on:
-#      - db
-#    environment:
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=postgres
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/minguard
-#      - SPRING_DATASOURCE_USERNAME=postgres
-#      - SPRING_DATASOURCE_PASSWORD=postgres
-#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-#    ports:
-#      - "8080:8080"
+   minguard_db:
+     image: postgres
+     container_name: minguard_db
+     environment:
+       - POSTGRES_USER=postgres
+       - POSTGRES_PASSWORD=postgres
+       - POSTGRES_DB=minguard
+     ports:
+       - "5432:5432"
+  
+   app:
+     build:
+       context: .
+     container_name: app
+     depends_on:
+       - minguard_db
+     environment:
+       - SPRING_DATASOURCE_URL=jdbc:postgresql://minguard_db:5432/minguard
+       - SPRING_DATASOURCE_USERNAME=postgres
+       - SPRING_DATASOURCE_PASSWORD=postgres
+       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+     ports:
+       - "8089:8089"
+  
+   maven:
+     image: maven:3.8.5-openjdk-17
+     volumes:
+       - .:/app 
+       - ~/.m2:/root/.m2  
+     working_dir: /app
 
-  minguard_db:
-    image: postgres
-    container_name: minguard_db
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=minguard
-    ports:
-      - "5433:5432"
+  
+

@@ -1,7 +1,19 @@
-FROM openjdk:17
+FROM maven:3.8.5-openjdk-17 AS build
 
-ARG JAR_FILE=target/*.jar
+WORKDIR /app
 
-COPY ${JAR_FILE} application.jar
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+COPY . .
+
+RUN mvn package -DskipTests
+
+FROM openjdk:17-jdk-slim
+
+VOLUME /tmp
+EXPOSE 8080
+
+COPY --from=build /app/target/*.jar app.jar
+
+ENTRYPOINT ["java", "-jar", "/app.jar"]
