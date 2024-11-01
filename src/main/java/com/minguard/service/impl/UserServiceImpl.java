@@ -42,10 +42,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse getAuthenticatedUser() {
+    public UserResponse getAuthenticatedUserResponse() {
         Authentication authentication = getAuthentication();
 
         return UserMapper.INSTANCE.toResponse((User) authentication.getPrincipal());
+    }
+
+    @Override
+    public User getAuthenticatedUser() {
+        Authentication authentication = getAuthentication();
+
+        return (User) authentication.getPrincipal();
     }
 
     private Authentication getAuthentication() {

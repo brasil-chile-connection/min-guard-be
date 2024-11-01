@@ -55,7 +55,8 @@ public class IncidentServiceImpl implements IncidentService {
     @Override
     public RegisterIncidentResponse register(RegisterIncidentRequest request) {
         Incident incident = IncidentMapper.INSTANCE.fromRegisterRequest(request);
-        incident.setReporter(userService.getAuthenticatedUser());
+        User authenticatedUser = userService.getAuthenticatedUser();
+        incident.setReporter(authenticatedUser);
         assignUrgency(incident, request.getUrgencyId());
         return IncidentMapper.INSTANCE.toRegisterResponse(incidentRepository.save(incident));
     }
@@ -93,7 +94,7 @@ public class IncidentServiceImpl implements IncidentService {
 
     private void validateIncidentAccess(Incident incident) {
         User user = userService.getAuthenticatedUser();
-        if (!incident.getReporterId().equals(user.getId()) && !user.isAdmin()) {
+        if (!incident.getReporter().getId().equals(user.getId()) && !user.isAdmin()) {
             throw new AccessDeniedException("You are not authorized to access this incident.");
         }
     }

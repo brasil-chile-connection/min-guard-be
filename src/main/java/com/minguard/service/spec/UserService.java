@@ -13,7 +13,9 @@ public interface UserService {
 
     Long getAuthenticatedUserId();
 
-    UserResponse getAuthenticatedUser();
+    UserResponse getAuthenticatedUserResponse();
+
+    User getAuthenticatedUser();
 
     List<UserResponse> findAll();
 

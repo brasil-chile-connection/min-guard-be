@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping("/me")
     @Operation(summary = "Get authenticated user", description = "Get details of the authenticated user.")
     public ResponseEntity<UserResponse> authenticatedUser() {
-        UserResponse user = userService.getAuthenticatedUser();
+        UserResponse user = userService.getAuthenticatedUserResponse();
 
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
