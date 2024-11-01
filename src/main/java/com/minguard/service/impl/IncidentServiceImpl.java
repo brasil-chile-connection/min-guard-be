@@ -15,6 +15,7 @@ import com.minguard.service.spec.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.security.access.AccessDeniedException;
 import jakarta.persistence.EntityNotFoundException;
 
 @RequiredArgsConstructor
@@ -25,7 +26,6 @@ public class IncidentServiceImpl implements IncidentService {
     private final UserService userService;
     private final UrgencyService urgencyService;
 
-    
     @Override
     public List<IncidentResponse> findAll() {
         return IncidentMapper.INSTANCE.toResponses(incidentRepository.findAll());
@@ -33,54 +33,39 @@ public class IncidentServiceImpl implements IncidentService {
 
     @Override
     public List<IncidentResponse> getAllIncidentsByReporter(Long reporterId) {
-        User reporter = userService.getUserById(reporterId);
-
-        List<Incident> incidents = incidentRepository.findByReporter(reporter);
+        validateUserAccess(reporterId);
+        List<Incident> incidents = incidentRepository.findByReporter(userService.getUserById(reporterId));
         return IncidentMapper.INSTANCE.toResponses(incidents);
     }
 
     @Override
     public List<IncidentResponse> getAllIncidentsByUrgency(Long urgencyId) {
         Urgency urgency = urgencyService.getById(urgencyId);
-
         List<Incident> incidents = incidentRepository.findByUrgency(urgency);
         return IncidentMapper.INSTANCE.toResponses(incidents);
     }
 
     @Override
     public Incident getIncidentById(Long incidentId) {
-        return incidentRepository.findById(incidentId)
-        .orElseThrow(() -> new EntityNotFoundException(String.format("Can't find incident for id=%s", incidentId)));
-    }
-
-    private void assignReporter(Incident incident, Long reporterId) {
-        User reporter = userService.getUserById(reporterId);
-        incident.setReporter(reporter);
-    }
-
-    private void assignUrgency(Incident incident, Long urgencyId) {
-        Urgency urgency = urgencyService.getById(urgencyId);
-        incident.setUrgency(urgency);
+        Incident incident = findIncidentOrThrow(incidentId);
+        validateIncidentAccess(incident);
+        return incident;
     }
 
     @Override
     public RegisterIncidentResponse register(RegisterIncidentRequest request) {
-
         Incident incident = IncidentMapper.INSTANCE.fromRegisterRequest(request);
-
-        assignReporter(incident, request.getReporterId());
+        incident.setReporter(userService.getAuthenticatedUser());
         assignUrgency(incident, request.getUrgencyId());
-
         return IncidentMapper.INSTANCE.toRegisterResponse(incidentRepository.save(incident));
     }
 
     @Override
     public IncidentResponse editIncident(Long incidentId, UpdateIncidentRequest request) {
+        Incident incident = findIncidentOrThrow(incidentId);
+        validateIncidentAccess(incident);
 
-        Incident incident = incidentRepository.findById(incidentId)
-            .orElseThrow(() -> new RuntimeException("Incident not found"));
-
-        IncidentMapper.INSTANCE.fromUpdateRequest(incident,request);
+        IncidentMapper.INSTANCE.fromUpdateRequest(incident, request);
 
         if (request.getUrgencyId() != null) {
             assignUrgency(incident, request.getUrgencyId());
@@ -96,9 +81,35 @@ public class IncidentServiceImpl implements IncidentService {
     @Override
     public void deleteIncident(Long incidentId) {
         if (!incidentRepository.existsById(incidentId)) {
-            throw new RuntimeException("Incident not found");
+            throw new EntityNotFoundException("Incident not found");
         }
-
         incidentRepository.deleteById(incidentId);
+    }
+
+    private Incident findIncidentOrThrow(Long incidentId) {
+        return incidentRepository.findById(incidentId)
+            .orElseThrow(() -> new EntityNotFoundException("Incident not found for id=" + incidentId));
+    }
+
+    private void validateIncidentAccess(Incident incident) {
+        User user = userService.getAuthenticatedUser();
+        if (!incident.getReporterId().equals(user.getId()) && !user.isAdmin()) {
+            throw new AccessDeniedException("You are not authorized to access this incident.");
+        }
+    }
+
+    private void validateUserAccess(Long reporterId) {
+        User user = userService.getAuthenticatedUser();
+        if (!reporterId.equals(user.getId()) && !user.isAdmin()) {
+            throw new AccessDeniedException("You are not authorized to access incidents for this reporter.");
+        }
+    }
+
+    private void assignReporter(Incident incident, Long reporterId) {
+        incident.setReporter(userService.getUserById(reporterId));
+    }
+
+    private void assignUrgency(Incident incident, Long urgencyId) {
+        incident.setUrgency(urgencyService.getById(urgencyId));
     }
 }

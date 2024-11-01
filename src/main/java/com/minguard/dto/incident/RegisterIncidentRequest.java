@@ -19,6 +19,4 @@ public class RegisterIncidentRequest {
     @NotNull(message = "urgencyId" + ValidationMessage.MUST_BE_SPECIFIED)
     private Long urgencyId;
 
-    @NotNull(message = "reporterId" + ValidationMessage.MUST_BE_SPECIFIED)
-    private Long reporterId;
 }

@@ -36,8 +36,6 @@ public class IncidentController {
 
     private final IncidentService incidentService;
 
-    
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{incidentId}")
     @Operation(summary = "Get incident by id", description = "Get details of the incident by id.")
     public ResponseEntity<IncidentResponse> incidentById(@PathVariable Long incidentId) {
@@ -46,6 +44,7 @@ public class IncidentController {
         return ResponseEntity.status(HttpStatus.OK).body(IncidentMapper.INSTANCE.toResponse(incident));
     }
 
+    //ver sobre o incident detailed response
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     @Operation(summary = "Get all incidents", description = "Get details of all incidents. Must have admin role.")
@@ -55,7 +54,6 @@ public class IncidentController {
         return ResponseEntity.status(HttpStatus.OK).body(incidents);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/reporter/{reporterId}")
     @Operation(summary = "Get all incidents by reporter", description = "Get details of all incidents by reporter. Must have admin role.")
     public ResponseEntity<List<IncidentResponse>> allIncidentsByReporter(@PathVariable Long reporterId) {
@@ -81,7 +79,6 @@ public class IncidentController {
         return ResponseEntity.ok(registeredIncident);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{incidentId}")
     @Operation(summary = "Edit incident", description = "Updates incident details by id. Must have admin role.")
     public ResponseEntity<IncidentResponse> editIncident(@PathVariable Long incidentId, @Valid @RequestBody UpdateIncidentRequest request) {
