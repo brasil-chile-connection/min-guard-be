@@ -23,7 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.Optional;
+import jakarta.persistence.EntityNotFoundException;
 
 @RequiredArgsConstructor
 @Service
@@ -42,10 +42,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse getAuthenticatedUser() {
+    public UserResponse getAuthenticatedUserResponse() {
         Authentication authentication = getAuthentication();
 
         return UserMapper.INSTANCE.toResponse((User) authentication.getPrincipal());
+    }
+
+    @Override
+    public User getAuthenticatedUser() {
+        Authentication authentication = getAuthentication();
+
+        return (User) authentication.getPrincipal();
     }
 
     private Authentication getAuthentication() {
@@ -107,15 +114,10 @@ public class UserServiceImpl implements UserService {
         throw new NotImplementedException("Not implemented yet");
     }
 
-    
-    public UserResponse getUserById(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-
-        if (user.isPresent()) {
-            return UserMapper.INSTANCE.toResponse(user.get());
-        } else {
-            throw new RuntimeException("User not found");
-        }
+    @Override
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+        .orElseThrow(() -> new EntityNotFoundException(String.format("Can't find user for id=%s", userId)));
     }
 
     public UserResponse editUser(Long userId, UpdateUserRequest request) {

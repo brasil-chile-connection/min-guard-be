@@ -1,6 +1,6 @@
 package com.minguard.entity;
 
-import com.minguard.util.Statuses;
+import com.minguard.util.Roles;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Entity(name = "status")
-public class Status {
+@Entity(name = "urgency")
+public class Urgency {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Statuses name;
+    private String name;
+
 }

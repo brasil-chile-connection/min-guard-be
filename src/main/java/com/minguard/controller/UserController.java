@@ -4,6 +4,7 @@ import com.minguard.dto.user.RegisterUserRequest;
 import com.minguard.dto.user.RegisterUserResponse;
 import com.minguard.dto.user.UpdateUserRequest;
 import com.minguard.dto.user.UserResponse;
+import com.minguard.entity.User;
 import com.minguard.service.spec.UserService;
 import com.minguard.util.Roles;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import com.minguard.mapper.UserMapper;
 
 @RequiredArgsConstructor
 @Tag(name = "User Controller")
@@ -37,7 +39,7 @@ public class UserController {
     @GetMapping("/me")
     @Operation(summary = "Get authenticated user", description = "Get details of the authenticated user.")
     public ResponseEntity<UserResponse> authenticatedUser() {
-        UserResponse user = userService.getAuthenticatedUser();
+        UserResponse user = userService.getAuthenticatedUserResponse();
 
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
@@ -46,9 +48,9 @@ public class UserController {
     @GetMapping("/{userId}")
     @Operation(summary = "Get user by id", description = "Get details of the user by id.")
     public ResponseEntity<UserResponse> userById(@PathVariable Long userId) {
-        UserResponse user = userService.getUserById(userId);
+        User user = userService.getUserById(userId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        return ResponseEntity.status(HttpStatus.OK).body(UserMapper.INSTANCE.toResponse(user));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
