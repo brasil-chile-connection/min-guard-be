@@ -39,13 +39,13 @@ public class Incident {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
-    @Column(nullable = true)
+    @Column
     private String description;
 
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column
     private String location;
 
     @ManyToOne
@@ -56,5 +56,5 @@ public class Incident {
     @JoinColumn(name = "reporter_id", nullable = false)
     private User reporter;
 
-    
+
 }
