@@ -3,8 +3,9 @@ package com.minguard.dto.incident;
 import com.minguard.dto.urgency.UrgencyResponse;
 import com.minguard.dto.user.UserResponse;
 import java.time.LocalDateTime;
+import java.util.List;
 
-public record IncidentResponse(
+public record IncidentExtendedResponse(
 
         Long id,
 
@@ -20,7 +21,9 @@ public record IncidentResponse(
 
         UrgencyResponse urgency,
 
-        UserResponse reporter
+        UserResponse reporter,
+
+        List<String> images
 
 ) {
 

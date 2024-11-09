@@ -5,7 +5,7 @@ import com.minguard.entity.Role;
 import com.minguard.mapper.RoleMapper;
 import com.minguard.repository.RoleRepository;
 import com.minguard.service.spec.RoleService;
-import com.minguard.util.Roles;
+import com.minguard.enumeration.Roles;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.AllArgsConstructor;

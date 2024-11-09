@@ -12,8 +12,8 @@ public interface IncidentRepository extends JpaRepository<Incident, Long> {
 
     Optional<Incident> findById(Long id);
 
-    List<Incident> findByUrgency(Urgency urgency);
+    List<Incident> findAllByUrgency(Urgency urgency);
 
-    List<Incident> findByReporter(User reporter);
+    List<Incident> findAllByReporter(User reporter);
 
 }

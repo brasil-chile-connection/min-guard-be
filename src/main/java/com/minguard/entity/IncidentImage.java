@@ -1,27 +1,32 @@
 package com.minguard.entity;
 
-import com.minguard.enumeration.Roles;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Entity(name = "role")
-public class Role {
+@Entity(name = "incident_image")
+public class IncidentImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Roles name;
+    private String key;
+
+    @Column
+    private String url;
+
+    @ManyToOne
+    @JoinColumn(name = "incident_id", nullable = false)
+    private Incident incident;
 
 }
