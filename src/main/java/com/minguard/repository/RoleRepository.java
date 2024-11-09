@@ -1,7 +1,7 @@
 package com.minguard.repository;
 
 import com.minguard.entity.Role;
-import com.minguard.util.Roles;
+import com.minguard.enumeration.Roles;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

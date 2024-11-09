@@ -1,4 +1,4 @@
-package com.minguard.util;
+package com.minguard.enumeration;
 
 public enum Statuses {
     PENDING,

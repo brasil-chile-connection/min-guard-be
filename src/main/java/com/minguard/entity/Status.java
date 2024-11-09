@@ -1,6 +1,6 @@
 package com.minguard.entity;
 
-import com.minguard.util.Statuses;
+import com.minguard.enumeration.Statuses;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

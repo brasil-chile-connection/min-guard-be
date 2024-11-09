@@ -6,7 +6,7 @@ import com.minguard.dto.user.UpdateUserRequest;
 import com.minguard.dto.user.UserResponse;
 import com.minguard.entity.User;
 import com.minguard.service.spec.UserService;
-import com.minguard.util.Roles;
+import com.minguard.enumeration.Roles;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -103,6 +103,6 @@ public class UserController {
         userService.deleteUser(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-    
+
 
 }

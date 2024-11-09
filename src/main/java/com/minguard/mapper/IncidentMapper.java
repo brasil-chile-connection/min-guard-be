@@ -1,5 +1,6 @@
 package com.minguard.mapper;
 
+import com.minguard.dto.incident.IncidentExtendedResponse;
 import com.minguard.dto.incident.IncidentResponse;
 import com.minguard.dto.incident.RegisterIncidentRequest;
 import com.minguard.dto.incident.RegisterIncidentResponse;
@@ -8,7 +9,7 @@ import com.minguard.entity.Incident;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;   
+import org.mapstruct.factory.Mappers;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.MappingConstants;
@@ -26,6 +27,8 @@ public interface IncidentMapper {
     RegisterIncidentResponse toRegisterResponse(Incident incident);
 
     IncidentResponse toResponse(Incident incident);
+
+    IncidentExtendedResponse toExtendedResponse(Incident incident, List<String> images);
 
     List<IncidentResponse> toResponses(List<Incident> incident);
 
