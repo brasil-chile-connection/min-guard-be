@@ -2,27 +2,15 @@ package com.minguard.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import com.minguard.entity.Urgency;
-import com.minguard.entity.User;
 
 @Data
 @NoArgsConstructor
@@ -39,13 +27,13 @@ public class Incident {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
-    @Column(nullable = true)
+    @Column
     private String description;
 
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column
     private String location;
 
     @ManyToOne
@@ -56,5 +44,7 @@ public class Incident {
     @JoinColumn(name = "reporter_id", nullable = false)
     private User reporter;
 
-    
+    public Incident(Long id) {
+        this.id = id;
+    }
 }

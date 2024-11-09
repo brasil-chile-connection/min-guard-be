@@ -1,6 +1,6 @@
 package com.minguard.entity;
 
-import com.minguard.util.Genders;
+import com.minguard.enumeration.Genders;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

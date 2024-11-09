@@ -13,7 +13,7 @@ import com.minguard.repository.UserRepository;
 import com.minguard.service.spec.GenderService;
 import com.minguard.service.spec.RoleService;
 import com.minguard.service.spec.UserService;
-import com.minguard.util.Roles;
+import com.minguard.enumeration.Roles;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.NotImplementedException;

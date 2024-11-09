@@ -10,10 +10,7 @@
 ## Project run
 
 ```bash
-$ sudo docker-compose up
-$ mvn clean
-$ mvn compile
-$ mvn spring-boot:run
+$ sudo docker-compose up --build
 ```
 
 ## API Documentation

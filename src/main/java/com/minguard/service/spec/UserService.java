@@ -5,7 +5,7 @@ import com.minguard.dto.user.RegisterUserResponse;
 import com.minguard.dto.user.UserResponse;
 import com.minguard.dto.user.UpdateUserRequest;
 import com.minguard.entity.User;
-import com.minguard.util.Roles;
+import com.minguard.enumeration.Roles;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 

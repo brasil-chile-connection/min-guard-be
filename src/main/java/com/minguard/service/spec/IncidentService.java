@@ -1,25 +1,24 @@
 package com.minguard.service.spec;
 
+import com.minguard.dto.incident.IncidentExtendedResponse;
 import com.minguard.dto.incident.IncidentResponse;
 import com.minguard.dto.incident.RegisterIncidentRequest;
 import com.minguard.dto.incident.RegisterIncidentResponse;
 import com.minguard.dto.incident.UpdateIncidentRequest;
-import com.minguard.entity.Urgency;
-import com.minguard.entity.User;
-import com.minguard.entity.Incident;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface IncidentService {
 
-    List<IncidentResponse> findAll();
+    List<IncidentExtendedResponse> getAll();
 
-    List<IncidentResponse> getAllIncidentsByReporter(Long reporterId);
+    List<IncidentExtendedResponse> getAllIncidentsByReporter(Long reporterId);
 
-    List<IncidentResponse> getAllIncidentsByUrgency(Long urgencyId);
+    List<IncidentExtendedResponse> getAllIncidentsByUrgency(Long urgencyId);
 
-    Incident getIncidentById(Long incidentId);
+    IncidentExtendedResponse getById(Long incidentId);
 
-    RegisterIncidentResponse register(RegisterIncidentRequest request);
+    RegisterIncidentResponse registerIncident(RegisterIncidentRequest request, List<MultipartFile> images);
 
     IncidentResponse editIncident(Long incidentId, UpdateIncidentRequest request);
 

@@ -1,6 +1,6 @@
 package com.minguard.config;
 
-import com.minguard.util.Roles;
+import com.minguard.enumeration.Roles;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
