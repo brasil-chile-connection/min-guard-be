@@ -1,5 +1,6 @@
 package com.minguard.controller;
 
+import com.amazonaws.services.stepfunctions.builder.conditions.StringGreaterThanCondition;
 import com.minguard.dto.user.LoginRequest;
 import com.minguard.dto.user.LoginResponse;
 import com.minguard.service.spec.AuthService;
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+
+    @GetMapping("/system-status")
+    @Operation(summary = "Check system", description = "Check if system is operational.")
+    public ResponseEntity<String> check() {
+        return ResponseEntity.ok("System is operational.");
+    }
 
     @PostMapping("/login")
     @Operation(summary = "Authenticate user", description = "Logs-in with e-mail and password.")
