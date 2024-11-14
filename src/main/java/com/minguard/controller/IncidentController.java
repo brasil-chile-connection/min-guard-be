@@ -65,9 +65,9 @@ public class IncidentController {
 
     @PostMapping(value = "/register", consumes = {"multipart/form-data"})
     @Operation(summary = "Create a new incident", description = "Creates a new incident in the system.")
-    public ResponseEntity<RegisterIncidentResponse> register(@RequestPart("request") @Valid RegisterIncidentRequest request,
-                                                             @RequestPart("images") List<MultipartFile> images) {
-        RegisterIncidentResponse registeredIncident = incidentService.registerIncident(request, images);
+    public ResponseEntity<RegisterIncidentResponse> registerIncident(@RequestPart(value = "request") @Valid RegisterIncidentRequest request,
+                                                                     @RequestPart(value = "images", required = false) List<MultipartFile> images) {
+        RegisterIncidentResponse registeredIncident = incidentService.registerIncident(request, images != null ? images : List.of());
         return ResponseEntity.status(HttpStatus.OK).body(registeredIncident);
     }
 
