@@ -23,7 +23,7 @@ public class Ticket {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "incident_id", nullable = false)
+    @JoinColumn(name = "incident_id")
     private Incident incident;
 
     @Column(nullable = false)

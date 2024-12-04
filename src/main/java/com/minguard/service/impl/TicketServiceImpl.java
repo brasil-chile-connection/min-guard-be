@@ -36,6 +36,12 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public RegisterTicketResponse registerTicket(RegisterTicketRequest request) {
         Ticket ticket = TicketMapper.INSTANCE.fromRegisterRequest(request);
+        if (ticket.getResponsible() != null && ticket.getResponsible().getId() == null) {
+            ticket.setResponsible(null);
+        }
+        if (ticket.getIncident() != null && ticket.getIncident().getId() == null) {
+            ticket.setIncident(null);
+        }
 
         ticket.setIdentifier(UUID.randomUUID());
 

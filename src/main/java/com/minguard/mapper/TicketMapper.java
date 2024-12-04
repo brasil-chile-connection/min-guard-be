@@ -6,6 +6,7 @@ import com.minguard.dto.ticket.TicketResponse;
 import com.minguard.dto.ticket.UpdateTicketRequest;
 import com.minguard.entity.Ticket;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
@@ -20,6 +21,10 @@ public interface TicketMapper {
 
     TicketExtendedResponse toExtendedResponse(Ticket incident);
 
+    @Mapping(target = "status.id", source = "statusId")
+    @Mapping(target = "urgency.id", source = "urgencyId")
+    @Mapping(target = "incident.id", source = "incidentId")
+    @Mapping(target = "responsible.id", source = "responsibleId")
     Ticket fromRegisterRequest(RegisterTicketRequest request);
 
     List<TicketResponse> toResponses(List<Ticket> ticket);
