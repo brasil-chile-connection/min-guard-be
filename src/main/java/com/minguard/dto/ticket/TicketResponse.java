@@ -7,7 +7,7 @@ import com.minguard.dto.user.UserResponse;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record TicketExtendedResponse(
+public record TicketResponse(
 
         Long id,
 

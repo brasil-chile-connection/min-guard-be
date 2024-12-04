@@ -7,6 +7,8 @@ import com.minguard.service.spec.StatusService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.minguard.entity.Status;
+import jakarta.persistence.EntityNotFoundException;
 
 @AllArgsConstructor
 @Service
@@ -17,5 +19,11 @@ public class StatusServiceImpl implements StatusService {
     @Override
     public List<StatusResponse> findAll() {
         return StatusMapper.INSTANCE.toResponses(statusRepository.findAll());
+    }
+
+    @Override
+    public Status getById(Long statusId) {
+        return statusRepository.findById(statusId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Can't find status for id=%s", statusId)));
     }
 }
