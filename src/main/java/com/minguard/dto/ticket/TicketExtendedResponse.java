@@ -1,6 +1,7 @@
 package com.minguard.dto.ticket;
 
 import com.minguard.dto.incident.IncidentResponse;
+import com.minguard.dto.status.StatusResponse;
 import com.minguard.dto.urgency.UrgencyResponse;
 import com.minguard.dto.user.UserResponse;
 import java.time.LocalDateTime;
@@ -26,7 +27,9 @@ public record TicketExtendedResponse(
 
         UserResponse responsible,
 
-        UUID identifier
+        UUID identifier,
+
+        StatusResponse status
 ) {
 
 }
