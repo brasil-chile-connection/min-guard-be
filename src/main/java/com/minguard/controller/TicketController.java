@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 import com.minguard.dto.ticket.UpdateTicketRequest;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Tag(name = "Ticket Controller")
@@ -41,18 +43,19 @@ public class TicketController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping
+    @PostMapping(consumes = {"multipart/form-data"})
     @Operation(summary = "Create a new ticket", description = "Creates a new ticket in the system.")
-    public ResponseEntity<RegisterTicketResponse> registerTicket(@Valid @RequestBody RegisterTicketRequest request) {
-        RegisterTicketResponse registeredTicket = ticketService.registerTicket(request);
+    public ResponseEntity<RegisterTicketResponse> registerTicket(@RequestPart(value = "request") @Valid RegisterTicketRequest request,
+                                                                     @RequestPart(value = "images", required = false) List<MultipartFile> images) {
+        RegisterTicketResponse registeredTicket = ticketService.registerTicket(request, images != null ? images : List.of());
         return ResponseEntity.status(HttpStatus.OK).body(registeredTicket);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     @Operation(summary = "Get all tickets", description = "Get details of all tickets. Must have admin role.")
-    public ResponseEntity<List<TicketResponse>> allTickets() {
-        List<TicketResponse> tickets = ticketService.getAll();
+    public ResponseEntity<List<TicketExtendedResponse>> allTickets() {
+        List<TicketExtendedResponse> tickets = ticketService.getAll();
         return ResponseEntity.status(HttpStatus.OK).body(tickets);
     }
 
@@ -69,5 +72,13 @@ public class TicketController {
     public ResponseEntity<Void> deleteTicket(@PathVariable Long ticketId) {
         ticketService.deleteTicket(ticketId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping(value = "/test", consumes = {"multipart/form-data"})
+    public ResponseEntity<String> testUpload(
+            @RequestPart("request") String request,
+            @RequestPart("images") MultipartFile file) {
+
+        return ResponseEntity.ok("Request: " + request + ", File: " + file.getOriginalFilename());
     }
 }
