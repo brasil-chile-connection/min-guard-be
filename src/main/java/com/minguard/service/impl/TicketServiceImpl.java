@@ -6,10 +6,12 @@ import com.minguard.dto.ticket.TicketExtendedResponse;
 import com.minguard.dto.ticket.TicketResponse;
 import com.minguard.dto.ticket.UpdateTicketRequest;
 import com.minguard.entity.Ticket;
+import com.minguard.enumeration.Statuses;
 import com.minguard.mapper.TicketMapper;
 import com.minguard.repository.TicketRepository;
 import com.minguard.service.spec.TicketService;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -69,6 +71,7 @@ public class TicketServiceImpl implements TicketService {
             assignStatus(ticket, request.getStatusId());
         }
         //@TODO - ver se tem como editar o responsibleId e o incidentId
+        ticket.setUpdatedAt(LocalDateTime.now());
 
         return TicketMapper.INSTANCE.toResponse(ticketRepository.save(ticket));
     }
@@ -80,6 +83,21 @@ public class TicketServiceImpl implements TicketService {
             throw new EntityNotFoundException("Ticket not found");
         }
         ticketRepository.deleteById(ticketId);
+    }
+
+    @Override
+    public void completeByUuid(UUID identifier, String closureComment) {
+        final var ticket = ticketRepository.getByIdentifier(identifier);
+
+        final var statusesThatAllowClosing = List.of(Statuses.PENDING, Statuses.IN_PROGRESS);
+        if (!statusesThatAllowClosing.contains(ticket.getStatus().getName())) {
+            throw new IllegalStateException("Ticket can't be set as done because its current status is " + ticket.getStatus().getName());
+        }
+
+        ticket.setStatus(statusService.getByName(Statuses.DONE));
+        ticket.setClosureComment(closureComment);
+        ticket.setUpdatedAt(LocalDateTime.now());
+        ticketRepository.save(ticket);
     }
 
     private Ticket findTicketOrThrow(Long ticketId) {

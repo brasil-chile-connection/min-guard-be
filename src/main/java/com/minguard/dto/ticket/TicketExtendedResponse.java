@@ -29,7 +29,9 @@ public record TicketExtendedResponse(
 
         UUID identifier,
 
-        StatusResponse status
+        StatusResponse status,
+
+        String closureComment
 ) {
 
 }

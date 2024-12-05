@@ -56,4 +56,7 @@ public class Ticket {
     @Column
     private UUID identifier = UUID.randomUUID();
 
+    @Column(name = "closure_comment")
+    private String closureComment;
+
 }
