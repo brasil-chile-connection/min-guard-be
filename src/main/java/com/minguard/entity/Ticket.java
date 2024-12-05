@@ -59,4 +59,8 @@ public class Ticket {
     @Column(name = "closure_comment")
     private String closureComment;
 
+    public Ticket(Long id) {
+        this.id = id;
+    }
+
 }

@@ -6,6 +6,7 @@ import com.minguard.dto.urgency.UrgencyResponse;
 import com.minguard.dto.user.UserResponse;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.List;
 
 public record TicketExtendedResponse(
 
@@ -31,7 +32,8 @@ public record TicketExtendedResponse(
 
         StatusResponse status,
 
-        String closureComment
+        String closureComment,
+        List<String> images
 ) {
 
 }

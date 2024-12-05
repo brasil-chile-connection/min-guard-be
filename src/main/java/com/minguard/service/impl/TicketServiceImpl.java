@@ -7,6 +7,7 @@ import com.minguard.dto.ticket.TicketResponse;
 import com.minguard.dto.ticket.UpdateTicketRequest;
 import com.minguard.entity.Ticket;
 import com.minguard.enumeration.Statuses;
+import com.minguard.entity.TicketImage;
 import com.minguard.mapper.TicketMapper;
 import com.minguard.repository.TicketRepository;
 import com.minguard.service.spec.TicketService;
@@ -18,6 +19,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import com.minguard.service.spec.UrgencyService;
 import com.minguard.service.spec.StatusService;
+import com.minguard.service.spec.TicketImageService;
+import org.springframework.web.multipart.MultipartFile;
+
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
@@ -27,16 +31,18 @@ public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
     private final StatusService statusService;
     private final UrgencyService urgencyService;
+    private final TicketImageService ticketImageService;
+
 
     @Override
     public TicketExtendedResponse getById(Long ticketId) {
-        return ticketRepository.findById(ticketId)
-                .map(TicketMapper.INSTANCE::toExtendedResponse)
-                .orElseThrow(() -> new EntityNotFoundException("Ticket not found for  id=" + ticketId));
+        Ticket ticket = findTicketOrThrow(ticketId);
+        return mapToExtendedResponse(ticket);
     }
 
+    @Transactional
     @Override
-    public RegisterTicketResponse registerTicket(RegisterTicketRequest request) {
+    public RegisterTicketResponse registerTicket(RegisterTicketRequest request, List<MultipartFile> images) {
         Ticket ticket = TicketMapper.INSTANCE.fromRegisterRequest(request);
         if (ticket.getResponsible() != null && ticket.getResponsible().getId() == null) {
             ticket.setResponsible(null);
@@ -48,13 +54,15 @@ public class TicketServiceImpl implements TicketService {
         ticket.setIdentifier(UUID.randomUUID());
 
         ticket = ticketRepository.save(ticket);
+        ticketImageService.uploadImages(images, ticket.getId());
 
         return new RegisterTicketResponse(ticket.getId());
     }
 
+
     @Override
-    public List<TicketResponse> getAll() {
-        return TicketMapper.INSTANCE.toResponses(ticketRepository.findAll());
+    public List<TicketExtendedResponse> getAll() {
+        return mapToExtendedResponses(ticketRepository.findAll());
     }
 
     @Override
@@ -82,6 +90,7 @@ public class TicketServiceImpl implements TicketService {
         if (!ticketRepository.existsById(ticketId)) {
             throw new EntityNotFoundException("Ticket not found");
         }
+        ticketImageService.deleteAllByTicketId(ticketId);
         ticketRepository.deleteById(ticketId);
     }
 
@@ -112,5 +121,17 @@ public class TicketServiceImpl implements TicketService {
     private void assignStatus(Ticket ticket, Long statusId) {
         ticket.setStatus(statusService.getById(statusId));
     }
+
+    private List<TicketExtendedResponse> mapToExtendedResponses(List<Ticket> tickets) {
+        return tickets.stream().map(this::mapToExtendedResponse).toList();
+    }
+
+    private TicketExtendedResponse mapToExtendedResponse(Ticket ticket) {
+        final var images = ticketImageService.findAllByTicketId(ticket.getId())
+                .stream()
+                .map(TicketImage::getUrl).toList();
+        return TicketMapper.INSTANCE.toExtendedResponse(ticket, images);
+    }
+
 
 }

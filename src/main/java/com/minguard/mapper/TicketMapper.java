@@ -19,7 +19,7 @@ public interface TicketMapper {
 
     TicketMapper INSTANCE = Mappers.getMapper(TicketMapper.class);
 
-    TicketExtendedResponse toExtendedResponse(Ticket incident);
+    TicketExtendedResponse toExtendedResponse(Ticket incident, List<String> images);
 
     @Mapping(target = "status.id", source = "statusId")
     @Mapping(target = "urgency.id", source = "urgencyId")
