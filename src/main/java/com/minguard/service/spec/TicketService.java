@@ -7,6 +7,7 @@ import com.minguard.dto.ticket.TicketResponse;
 import com.minguard.dto.ticket.UpdateTicketRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface TicketService {
 
@@ -19,5 +20,7 @@ public interface TicketService {
     TicketResponse editTicket(Long ticketId, UpdateTicketRequest request);
 
     void deleteTicket(Long ticketId);
+
+    void completeByUuid(UUID identifier, String closureComment);
 
 }

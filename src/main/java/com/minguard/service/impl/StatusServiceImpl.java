@@ -1,6 +1,7 @@
 package com.minguard.service.impl;
 
 import com.minguard.dto.status.StatusResponse;
+import com.minguard.enumeration.Statuses;
 import com.minguard.mapper.StatusMapper;
 import com.minguard.repository.StatusRepository;
 import com.minguard.service.spec.StatusService;
@@ -25,5 +26,11 @@ public class StatusServiceImpl implements StatusService {
     public Status getById(Long statusId) {
         return statusRepository.findById(statusId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Can't find status for id=%s", statusId)));
+    }
+
+    @Override
+    public Status getByName(Statuses status) {
+        return statusRepository.findByName(status)
+                .orElseThrow(() -> new EntityNotFoundException("Can't find status for name=%s" + status));
     }
 }
