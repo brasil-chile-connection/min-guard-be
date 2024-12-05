@@ -1,2 +1,2 @@
-INSERT INTO users (id, email, password, first_name, last_name, mobile_prefix, mobile_number, created_at, updated_at, accept_tc, gender_id, profile_picture_path, role_id) VALUES
-    (1, 'admin@admin.com', '$2a$10$8uN0i7ERhWL7CezdzDSqTeUlZRka.pQRKWRk36BxDfvaqC7vMk09K', 'Admin', 'User', '+55', '51999999999', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, (SELECT id FROM gender WHERE name = 'RATHER_NOT_SAY'), null, (SELECT id FROM role WHERE name = 'ADMIN'));
+INSERT INTO users (email, password, first_name, last_name, mobile_prefix, mobile_number, created_at, updated_at, accept_tc, gender_id, profile_picture_path, role_id) VALUES
+    ('admin@admin.com', '$2a$10$8uN0i7ERhWL7CezdzDSqTeUlZRka.pQRKWRk36BxDfvaqC7vMk09K', 'Admin', 'User', '+55', '51999999999', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, true, (SELECT id FROM gender WHERE name = 'RATHER_NOT_SAY'), null, (SELECT id FROM role WHERE name = 'ADMIN'));
