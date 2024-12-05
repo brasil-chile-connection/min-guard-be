@@ -21,6 +21,8 @@ public interface TicketService {
 
     void deleteTicket(Long ticketId);
 
-    void completeByUuid(UUID identifier, String closureComment);
+    void completeByIdentifier(UUID identifier, String closureComment);
+
+    TicketExtendedResponse getByIdentifier(UUID identifier);
 
 }

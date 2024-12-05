@@ -95,7 +95,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void completeByUuid(UUID identifier, String closureComment) {
+    public void completeByIdentifier(UUID identifier, String closureComment) {
         final var ticket = ticketRepository.getByIdentifier(identifier);
 
         final var statusesThatAllowClosing = List.of(Statuses.PENDING, Statuses.IN_PROGRESS);
@@ -107,6 +107,11 @@ public class TicketServiceImpl implements TicketService {
         ticket.setClosureComment(closureComment);
         ticket.setUpdatedAt(LocalDateTime.now());
         ticketRepository.save(ticket);
+    }
+
+    @Override
+    public TicketExtendedResponse getByIdentifier(UUID identifier) {
+        return mapToExtendedResponse(ticketRepository.getByIdentifier(identifier));
     }
 
     private Ticket findTicketOrThrow(Long ticketId) {

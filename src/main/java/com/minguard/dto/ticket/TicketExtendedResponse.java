@@ -33,6 +33,7 @@ public record TicketExtendedResponse(
         StatusResponse status,
 
         String closureComment,
+
         List<String> images
 ) {
 
