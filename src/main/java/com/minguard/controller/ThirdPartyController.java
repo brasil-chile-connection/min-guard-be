@@ -34,8 +34,7 @@ public class ThirdPartyController {
     @GetMapping("/ticket/{identifier}")
     @Operation(summary = "Get ticket by identifier", description = "Get ticket by UUID identifier.")
     public ResponseEntity<TicketExtendedResponse> getTicket(@PathVariable UUID identifier) {
-        ticketService.getByIdentifier(identifier);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ticketService.getByIdentifier(identifier));
     }
 
 }
